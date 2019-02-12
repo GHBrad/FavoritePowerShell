@@ -63,7 +63,7 @@ foreach ($User in $NewADUsers) {
     Enable-Mailbox -Identity $UserName -Alias $UserName | Out-Null
 
     #Send new hire email
-    Send-MailMessage -From <EMAIL ADDRESS> -to <HR EMAIL> -Cc <OTHER RELAVENT PARTIES> -Subject "Login credentials for $DisplayName" -Body "Username: $UserName
+    Send-MailMessage -From <EMAIL ADDRESS> -to <HR EMAIL> -Cc <OTHER RELEVANT PARTIES> -Subject "Login credentials for $DisplayName" -Body "Username: $UserName
 Password: $Password" -SmtpServer <EXCHANGE SERVER>
 }
 
