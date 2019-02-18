@@ -26,12 +26,11 @@
         $DRIVERPATH="<FOLDER PATH OF DRIVER>"
     )
 
-    #try {
+
         # Remove printer if already installed
         Remove-Printer -ComputerName $ComputerName -Name $PRINTERNAME
         Remove-PrinterPort -computername $computername -Name $PRINTERIP
-    #}
-    #catch {
+
         # Copy and install drivers to machine
         robocopy "\\<NETWORK SHARE>\$DRIVERPATH" "\\$ComputerName\c$\temp\$PRINTERNAME" /mir
         Invoke-Command -ComputerName $ComputerName -ScriptBlock {pnputil.exe /a 'C:\temp\<PRINTER NAME>\OEMSETUP.INF'}
@@ -40,4 +39,4 @@
         Add-PrinterDriver  -ComputerName $ComputerName -Name $DRIVERNAME
         Add-PrinterPort -ComputerName $ComputerName -Name $PRINTERIP -PrinterHostAddress $PRINTERIP
         Add-Printer -ComputerName $ComputerName -Name $PRINTERNAME -DriverName $DRIVERNAME -PortName $PRINTERIP
-    #}
+
