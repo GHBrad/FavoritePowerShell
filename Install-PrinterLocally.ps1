@@ -33,7 +33,7 @@
 
         # Copy and install drivers to machine
         robocopy "\\<NETWORK SHARE>\$DRIVERPATH" "\\$ComputerName\c$\temp\$PRINTERNAME" /mir
-        Invoke-Command -ComputerName $ComputerName -ScriptBlock {pnputil.exe /a 'C:\temp\<PRINTER NAME>\OEMSETUP.INF'}
+        Invoke-Command -ComputerName $ComputerName -ScriptBlock {pnputil.exe /a "C:\temp\PRINTER DRIVERS\OEMSETUP.INF"}
 
         # Install printer and associate port
         Add-PrinterDriver  -ComputerName $ComputerName -Name $DRIVERNAME
