@@ -2,6 +2,10 @@
 #This script will prompt for the user to be terminated, gather and export their AD group memberships to a network location, remove membership of those groups, move the user to 
 #the Terminated Employees OU and export their email to a network share.
 
+#Prompt the user to run this script as their domain admin account
+$wshell = New-Object -ComObject Wscript.Shell
+$wshell.Popup("Make sure to launch PowerShell as your domain admin account in order to run this script",0,"ATTENTION",0x1)
+
 Import-Module activedirectory
 
 #Create Exchange PowerShell session
@@ -43,6 +47,9 @@ Remove-ADPrincipalGroupMembership -Identity $TerminatedUser -MemberOf $ADGroups 
 
 #Move user to Terminated Employees OU
 Get-ADUser $TerminatedUser | Move-ADObject -TargetPath "OU=Terminated Employees,<OU PATH>"
+
+#Move home folder
+Move-Item "\\<NETWORK SHARE>\$TerminatedUser" -Destination "\\<NETWORK SHARE>\" -Force
 
 #Ends the Exchange session
 Remove-PSSession -Session $ExchSession
