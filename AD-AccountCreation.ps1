@@ -6,8 +6,16 @@
 
 Import-Module activedirectory
 
+#Instruct user to update the source spreadsheet
+Write-Host -nonewline "ATTENTION! Before running this script, make sure to update NewADUsers.csv in \\<NETWORK SHARE> 
+Continue? (Type 'Y' to continue, 'N' to cancel): " -ForegroundColor Red -BackgroundColor White
+$response = read-host
+if ( $response -ne "Y" ) { exit }
+
+#Prompt user for credentials and capture the input into a variable
+$UserCredential = $host.ui.PromptForCredential("Need credentials", "Enter your Domain Admin credentials.", "<DOMAIN>\", "NetBiosUserName")
+
 #Create Exchange PowerShell session
-$UserCredential = Get-Credential 
 $ExchSession = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://<EXCHANGE SERVER>/PowerShell -Authentication Kerberos -Credential $UserCredential
 Import-PSSession $ExchSession -DisableNameChecking -AllowClobber | Out-Null
 
@@ -20,7 +28,7 @@ foreach ($User in $NewADUsers) {
     $DisplayName = $User.FirstName + " " + $User.LastName 
     $FirstName = $User.FirstName
     $LastName = $User.LastName
-    $Password = $User.Password #(ConvertTo-SecureString $User.Password -AsPlainText -Force)
+    $Password = (ConvertTo-SecureString $User.Password -AsPlainText -Force)
     $Manager = $User.Manager
     $UserName = "$($FirstName.Substring(0,1))$LastName"
 
