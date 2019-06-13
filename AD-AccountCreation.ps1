@@ -36,8 +36,8 @@ foreach ($User in $NewADUsers) {
     Write-Verbose -Message "Checking if [$($Username)] is available"
     if (Get-ADUser -Filter "Name -eq '$Username'") {
         Write-Warning -Message "The username [$($Username)] is not available. Checking alternate..."
-        ## If so, check to see if the first initial/middle initial/last name is taken.
-        $Username = "$($FirstName.SubString(0, 1))$MiddleInitial$LastName"
+        ## If so, check to see if the first name.last name is taken.
+        $Username = "$($FirstName + "." + $LastName)"
         if (Get-ADUser -Filter "Name -eq '$Username'") {
             throw "No acceptable username schema could be created"
         }
