@@ -1,8 +1,6 @@
    
 #Created by Brad Johnson
 #Created 10/4/2017
-#I haven't been able to figure out how to set a relative path to install the INF file using pnputil, Add-WindowsDriver or Add-PrinterDriver. So,
-#if you're going to use this script as a template for other printer installs, change the printer named folder ('c:\temp\<PRINTER NAME>\OEMSETUP.INF) to the appropriate folder name.
 
 [CmdletBinding()]
     Param
